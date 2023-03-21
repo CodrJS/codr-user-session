@@ -1,85 +1,50 @@
-# Kafka Micro-Service Template
+# Codr Session Service
+
+[![CodeQL](https://github.com/CodrJS/codr-user-session/actions/workflows/codeql.yml/badge.svg)](https://github.com/CodrJS/codr-user-session/actions/workflows/codeql.yml)
+[![Docker Image CI](https://github.com/CodrJS/codr-user-session/actions/workflows/docker-image.yml/badge.svg)](https://github.com/CodrJS/codr-user-session/actions/workflows/docker-image.yml)
+
+## Purpose
+
+This microservice provides CRUD operations for the Session entity.
 
 ## Getting Started
 
-Click "Use this template" in Github, then "Create a new repository."
+To use this image, pull this image from the [Github Container Registry](https://github.com/CodrJS/codr-user-session/pkgs/container/codr-user-session).
 
-## Kafka
-
-Custom built consumer and producer classes can be imported from `@codrjs/kafka`.
-
-### Creating a producer
-
-```ts
-import { Producer } from "@codrjs/kafka";
-
-// this should be imported from "@codrjs/models"
-interface TestMessage {
-  hello: "world";
-}
-
-const Topic = "test-topic";
-const TestProducer = new Producer<TestMessage>(Topic);
-
-export default TestProducer;
+```bash
+docker pull ghcr.io/codrjs/codr-user-session:latest
 ```
 
-### Creating a consumer
+In Production, a version tag is preferred.
 
-```ts
-import type { KafkaMessage } from "kafkajs";
-import { Consumer } from "@codrjs/kafka";
-
-import dotenv from "dotenv";
-dotenv.config();
-
-// this should be imported from "@codrjs/models"
-interface TestMessage {
-  hello: "world";
-}
-
-const Topic = "test-topic";
-const TopicGroup = process.env.KAFKA_CONSUMER_GROUP as string;
-
-// @ts-ignore
-const processor = function (payload: TestMessage, message: KafkaMessage) {
-  // do stuff here
-};
-
-const TestConsumer = new Consumer<TestMessage>({
-  processor,
-  groupId: TopicGroup,
-  topics: [Topic],
-});
-
-export default TestConsumer;
+```bash
+docker pull ghcr.io/codrjs/codr-user-session:1.0.0
 ```
 
-## Heath Checks
+### Producers
 
-The `@codrjs/kafka` module automatically adds the Kafka admin client and all producers and consumers to the health check.
+- [x] `codr.user.event.session` - used for audit and notification purposes.
 
-The only health checks that need to be added manually are for the express server and mongoose instance.
+### Consumers
 
-```ts
-import { ServiceHealth } from "@codrjs/health";
+- [ ] None
 
-// for Express, add the following events to the appropriate handlers.
-//   This is done for you in this template.
-ServiceHealth.handleEvent("express", "connect");
-ServiceHealth.handleEvent("express", "disconnect");
+## Contributing
 
-// for Mongoose, add the connection property to the health monitor
-import mongoose from "mongoose";
+```bash
+# Clone the repo
+git clone git@github.com:CodrJS/codr-user-session.git
 
-const client = mongoose.connect(...);
-ServiceHealth.addMongo(client.connection);
+# Install yarn if you don't have it already
+npm install -g yarn
+
+# Install dependencies and build the code
+yarn install
+yarn build
+
+# Building the docker image
+yarn build:docker
 ```
-
-## Mongo
-
-If mongo is not needed, but remove the `src/server/mongo/` folder and update the `src/server/index.ts`
-and `src/serve.ts` accordingly. Also remove the `src/types/index.d.ts` file.
 
 ## Environment
 
@@ -94,5 +59,5 @@ Necessary variables needed to run:
 | `KAFKA_BROKERS`        | `kafka.brokers`        | `true`   | Kafka server - comma seperated locations of the kafka brokers                           |
 | `KAFKA_CLIENT_ID`      | `kafka.clientId`       | `true`   | Kafka server - name of the kafka cluster                                                |
 | `KAFKA_CONSUMER_GROUP` | `kafka.consumer.group` | `true`   | Kafka server - consumer group                                                           |
-| `JWT_SECRET`           | `jwt.secret`           | `false`  | JWT - secret, key to decode jwt, must be the same across all services in an environment |
-| `JWT_ISSUER`           | `jwt.issuer`           | `false`  | JWT - issuer, default `codrjs.com`                                                      |
+| `JWT_SECRET`           | `jwt.secret`           | `true`  | JWT - secret, key to decode jwt, must be the same across all services in an environment |
+| `JWT_ISSUER`           | `jwt.issuer`           | `true`  | JWT - issuer, default `codrjs.com`                                                      |

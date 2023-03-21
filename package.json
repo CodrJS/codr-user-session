@@ -1,11 +1,11 @@
 {
-  "name": "ts-kakfa-template",
+  "name": "codr-user-session",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "node dist/serve.js",
     "build": "swc ./src -d dist",
-    "build:docker": "docker build -t codr-svc-template .",
+    "build:docker": "docker build -t codr-user-session .",
     "test": "jest --config jest.config.json --passWithNoTests --coverage"
   },
   "devDependencies": {
