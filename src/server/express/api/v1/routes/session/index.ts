@@ -1,18 +1,37 @@
 import { Error } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
-import verifyJWT from "../../../middlewares/verifyJWT";
+import verifyJWT from "../../../../middlewares/verifyJWT";
 import { SessionUtility } from "@/utils/SessionUtility";
 import { R201, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
+import { Session } from "@codrjs/models";
+import { Types } from "mongoose";
 
 export const POST: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
     const util = new SessionUtility();
+
+    const ua = req.useragent;
+    const ip = (
+      <string>req.headers["x-forwarded-for"] ||
+      req.socket.remoteAddress ||
+      ""
+    )
+      .split(",")[0]
+      .trim();
+
+    const sess = new Session({
+      os: ua?.os,
+      browser: ua?.browser,
+      ipAddress: ip,
+      userId: req.user._id as Types.ObjectId,
+    });
+
     util
-      .create(req.user, req.body)
-      .then(res.status(200).json)
-      .catch((err: Error) => res.status(err.status).json(err));
+      .create(req.user, sess.toJSON())
+      .then(resp => res.status(200).json(resp))
+      .catch((err: Error) => res.status(err.status || 500).json(err));
   },
 ];
 

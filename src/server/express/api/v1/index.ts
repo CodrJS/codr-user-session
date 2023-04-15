@@ -2,9 +2,11 @@ import express from "express";
 import path from "path";
 import { Error } from "@codrjs/models";
 import { initialize } from "@dylanbulmer/openapi";
+import { express as useragent } from "express-useragent";
 import apiDoc from "./api-doc";
 
 const app = express();
+app.use(useragent());
 
 initialize({
   app,

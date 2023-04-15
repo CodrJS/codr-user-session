@@ -52,12 +52,10 @@ export class SessionUtility extends Utility {
     if (SessionAbility(token).can("create", "Session")) {
       try {
         // create session
-        const session = await MongoSession.create(obj);
+        const resp = await MongoSession.create(obj);
         return new Response({
           message: "OK",
-          details: {
-            session: new Session(session),
-          },
+          details: { session: new Session(resp) },
         });
       } catch (e) {
         throw new Error({

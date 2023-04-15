@@ -1,4 +1,4 @@
-import { Error, ISession, IUser, Response, Session } from "@codrjs/models";
+import { Error, IUser, Response, Session } from "@codrjs/models";
 import { SessionUtility } from "@/utils/SessionUtility";
 import { Types } from "mongoose";
 import MongoSession from "@/entities/Session";
@@ -56,8 +56,6 @@ const testSystemSession = new Session({
   _id: new Types.ObjectId(0),
   userId: testSystemUser._id as Types.ObjectId,
   status: "ESTABLISHED",
-  accessToken: "",
-  refreshToken: "",
   os: "",
   browser: "",
   ipAddress: "",
@@ -67,8 +65,6 @@ const testAdminSession = new Session({
   _id: new Types.ObjectId(1),
   userId: testAdminUser._id as Types.ObjectId,
   status: "ESTABLISHED",
-  accessToken: "",
-  refreshToken: "",
   os: "",
   browser: "",
   ipAddress: "",
@@ -78,8 +74,6 @@ const testResearchSession = new Session({
   _id: new Types.ObjectId(2),
   userId: testResearchUser._id as Types.ObjectId,
   status: "ESTABLISHED",
-  accessToken: "",
-  refreshToken: "",
   os: "",
   browser: "",
   ipAddress: "",
@@ -89,8 +83,6 @@ const testAnnotatorSession = new Session({
   _id: new Types.ObjectId(3),
   userId: testAnnotatorUser._id as Types.ObjectId,
   status: "ESTABLISHED",
-  accessToken: "",
-  refreshToken: "",
   os: "",
   browser: "",
   ipAddress: "",
@@ -100,8 +92,6 @@ const demoNewSession = new Session({
   _id: new Types.ObjectId(4),
   userId: new Types.ObjectId(10),
   status: "INITIATING",
-  accessToken: "",
-  refreshToken: "",
   os: "",
   browser: "",
   ipAddress: "",

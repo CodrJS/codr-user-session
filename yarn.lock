@@ -311,10 +311,10 @@
   resolved "https://registry.yarnpkg.com/@casl/mongoose/-/mongoose-7.1.2.tgz#61e86839ee19df8443158f44b10cbbe5137ed1fb"
   integrity sha512-YiY5gQlr5J0jsn0ZbjtDJEhqKviPyPj0ErZ2bnOh7li+ENvFMnfp5ZeF2wN7ZVcqK9mn4MCqWH56EzafRF3i+g==
 
-"@codrjs/config@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@codrjs/config/-/config-1.0.0.tgz#90dd9367da77976cc685cf82c344823115753ed5"
-  integrity sha512-KWN7lzW7D7+ysyYYTh+TXf8RZVVMF46umyf19k/ytH3vInDSWSBDiLZ7UaUIIiT1kqAkILYd8FFYUNHBzgZOSg==
+"@codrjs/config@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@codrjs/config/-/config-1.0.5.tgz#d3392c9b13b423dca3612f9c0946434956763069"
+  integrity sha512-e1iX97y44iOoaREw2LwM/HPtFUqo1s9bdH/IckLqTl3s0p1gKiwnVnQQ2ZHCMyagUOQF915y6eMTVlSvlY7jUA==
   dependencies:
     dotenv "^16.0.3"
 
@@ -340,12 +340,13 @@
   dependencies:
     winston "^3.8.2"
 
-"@codrjs/models@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@codrjs/models/-/models-1.0.3.tgz#7be6a70c6f6b44e047d0afb32300d8340588dc23"
-  integrity sha512-hD5yWR2GY1gXdHMMdzwt7xfnqPVr7IPNxrdUo0CArxGabXgeFRPkSboWd2Jyit9erU4BlMl6Gi/lhhgLgeLFCA==
+"@codrjs/models@^1.0.6-patch1":
+  version "1.0.6-patch1"
+  resolved "https://registry.yarnpkg.com/@codrjs/models/-/models-1.0.6-patch1.tgz#24c8573ebebd46b9711af7829f0f766360eae87d"
+  integrity sha512-TzZnyRQMj37JDSMd41y4w7Yt3nWqCFCsFyR64dqu7NTt1k+JLWm5zh4jq4sKhOg/d5TRPMW3I1R2E8fEgX/eRw==
   dependencies:
     "@casl/ability" "^6.3.3"
+    "@codrjs/config" "^1.0.5"
     uuid "^9.0.0"
 
 "@colors/colors@1.5.0":
@@ -866,7 +867,14 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.17":
+"@types/express-useragent@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/express-useragent/-/express-useragent-1.0.2.tgz#c129f2aae983fb7b646dbcd254973936f745c12f"
+  integrity sha512-eUVCqMsmEO7adMJSxuAARPUxbEJLYQJATiB86bx3MGeyUOTgKNnLTfAMaF+z84DftcH6NBbFFwiRomIcsFVdUQ==
+  dependencies:
+    "@types/express" "*"
+
+"@types/express@*", "@types/express@^4.17.17":
   version "4.17.17"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.17.tgz#01d5437f6ef9cfa8668e616e13c2f2ac9a491ae4"
   integrity sha512-Q4FmmuLGBG58btUnfS1c1r/NQdlp3DMfGDGig8WhfpA2YRUtEkxAjkZb0yvplJGYdF1fsQ81iMDcH24sSCNC/Q==
@@ -1699,6 +1707,11 @@ expect@^29.0.0, expect@^29.5.0:
     jest-matcher-utils "^29.5.0"
     jest-message-util "^29.5.0"
     jest-util "^29.5.0"
+
+express-useragent@^1.0.15:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/express-useragent/-/express-useragent-1.0.15.tgz#cefda5fa4904345d51d3368b117a8dd4124985d9"
+  integrity sha512-eq5xMiYCYwFPoekffMjvEIk+NWdlQY9Y38OsTyl13IvA728vKT+q/CSERYWzcw93HGBJcIqMIsZC5CZGARPVdg==
 
 express@^4.18.1, express@^4.18.2:
   version "4.18.2"

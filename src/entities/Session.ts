@@ -16,12 +16,10 @@ const SessionSchema = new Schema<ISession>(
       required: true,
       default: "INITIATING",
     },
-    accessToken: { type: String, required: true },
-    refreshToken: { type: String, required: true },
     userId: {
       type: SchemaTypes.ObjectId,
       required: true,
-      unique: true,
+      unique: false,
       index: true,
       ref: "User",
     },

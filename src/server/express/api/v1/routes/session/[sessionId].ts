@@ -1,7 +1,7 @@
 import { Error } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
 import { R200, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
-import verifyJWT from "../../../middlewares/verifyJWT";
+import verifyJWT from "../../../../middlewares/verifyJWT";
 import { SessionUtility } from "@/utils/SessionUtility";
 
 export const GET: Operation = [
@@ -11,7 +11,7 @@ export const GET: Operation = [
     const util = new SessionUtility();
     util
       .get(req.user, req.params.sessionId)
-      .then(res.status(200).json)
+      .then(resp => res.status(200).json(resp))
       .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
@@ -23,7 +23,7 @@ export const PATCH: Operation = [
     const util = new SessionUtility();
     util
       .update(req.user, req.params.sessionId, req.body)
-      .then(res.status(200).json)
+      .then(resp => res.status(200).json(resp))
       .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
@@ -35,7 +35,7 @@ export const DELETE: Operation = [
     const util = new SessionUtility();
     util
       .delete(req.user, req.params.sessionId)
-      .then(res.status(200).json)
+      .then(resp => res.status(200).json(resp))
       .catch((err: Error) => res.status(err.status).json(err));
   },
 ];
@@ -44,6 +44,17 @@ export const DELETE: Operation = [
 GET.apiDoc = {
   description: "Get session from database.",
   tags: ["Session Management"],
+  parameters: [
+    {
+      in: "path",
+      name: "sessionId",
+      schema: {
+        type: "string",
+      },
+      required: true,
+      description: "User's Session id to fetch.",
+    }
+  ],
   responses: {
     "200": {
       description: R200.description,
@@ -126,6 +137,17 @@ GET.apiDoc = {
 PATCH.apiDoc = {
   description: "Update session in database.",
   tags: ["Session Management"],
+  parameters: [
+    {
+      in: "path",
+      name: "sessionId",
+      schema: {
+        type: "string",
+      },
+      required: true,
+      description: "User's Session id to fetch.",
+    }
+  ],
   responses: {
     "200": {
       description: R200.description,
@@ -136,7 +158,7 @@ PATCH.apiDoc = {
               details: {
                 type: "object",
                 properties: {
-                  user: {
+                  session: {
                     $ref: "#/components/schemas/SessionEntitySchema",
                   },
                 },
@@ -185,7 +207,7 @@ PATCH.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this user."],
+                examples: ["User is forbidden from reading this session."],
               },
               details: {
                 type: "object",
@@ -209,7 +231,7 @@ PATCH.apiDoc = {
               message: {
                 type: "string",
                 examples: [
-                  "An unexpected error occurred when trying to update a user.",
+                  "An unexpected error occurred when trying to update a session.",
                 ],
               },
               details: {
@@ -233,6 +255,17 @@ PATCH.apiDoc = {
 DELETE.apiDoc = {
   description: "Delete session from database. This action preforms a soft-delete.",
   tags: ["Session Management"],
+  parameters: [
+    {
+      in: "path",
+      name: "sessionId",
+      schema: {
+        type: "string",
+      },
+      required: true,
+      description: "User's Session id to fetch.",
+    }
+  ],
   responses: {
     "200": {
       description: R200.description,
@@ -243,8 +276,8 @@ DELETE.apiDoc = {
               details: {
                 type: "object",
                 properties: {
-                  user: {
-                    $ref: "#/components/schemas/SessionSchema",
+                  session: {
+                    $ref: "#/components/schemas/SessionEntitySchema",
                   },
                 },
               },
@@ -292,7 +325,7 @@ DELETE.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this user."],
+                examples: ["User is forbidden from reading this session."],
               },
               details: {
                 type: "object",
@@ -316,7 +349,7 @@ DELETE.apiDoc = {
               message: {
                 type: "string",
                 examples: [
-                  "An unexpected error occurred when trying to delete a user.",
+                  "An unexpected error occurred when trying to delete a session.",
                 ],
               },
               details: {
