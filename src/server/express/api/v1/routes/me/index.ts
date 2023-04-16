@@ -1,47 +1,33 @@
-import { Error } from "@codrjs/models";
+import { Error, Response } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
-import verifyJWT from "../../../../middlewares/verifyJWT";
+import verifyJWT from "@/server/express/middlewares/verifyJWT";
 import { SessionUtility } from "@/utils/SessionUtility";
-import { R201, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
-import { Session } from "@codrjs/models";
-import { Types } from "mongoose";
+import { R200, R401, R403 } from "@dylanbulmer/openapi/classes/responses";
 
-export const POST: Operation = [
+export const GET: Operation = [
   /* business middleware not expressible by OpenAPI documentation goes here */
   verifyJWT,
   (req, res) => {
-    const util = new SessionUtility();
-
-    const ua = req.useragent;
-    const ip = (
-      <string>req.headers["x-forwarded-for"] ||
-      req.socket.remoteAddress ||
-      ""
-    )
-      .split(",")[0]
-      .trim();
-
-    const sess = new Session({
-      os: ua?.os,
-      browser: ua?.browser,
-      ipAddress: ip,
-      userId: req.user._id as Types.ObjectId,
-    });
-
-    util
-      .create(req.user, sess.toJSON())
-      .then(resp => res.status(200).json(resp))
-      .catch((err: Error) => res.status(err.status || 500).json(err));
+    // const util = new SessionUtility();
+    // util
+    //   .get(req.user, <string>(req.user._id as unknown))
+    //   .then(resp => res.status(200).json(resp))
+    //   .catch((err: Error) => res.status(err.status).json(err));
+    res.json(
+      new Response({
+        message: "Endpoint not available.",
+      })
+    );
   },
 ];
 
 // 3.0 specification
-POST.apiDoc = {
-  description: "Create a session in the database.",
-  tags: ["Session Management"],
+GET.apiDoc = {
+  description: "Get active session from database.",
+  tags: ["Self Management"],
   responses: {
-    "201": {
-      description: R201.description,
+    "200": {
+      description: R200.description,
       content: {
         "application/json": {
           schema: {
@@ -98,32 +84,7 @@ POST.apiDoc = {
               },
               message: {
                 type: "string",
-                examples: ["User is forbidden from reading this session."],
-              },
-              details: {
-                type: "object",
-                properties: {},
-              },
-            },
-          },
-        },
-      },
-    },
-    "500": {
-      description: R500.description,
-      content: {
-        "application/json": {
-          schema: {
-            properties: {
-              status: {
-                type: "number",
-                examples: [500],
-              },
-              message: {
-                type: "string",
-                examples: [
-                  "An unexpected error occurred when trying to create a session.",
-                ],
+                examples: ["User is forbidden from reading this user."],
               },
               details: {
                 type: "object",

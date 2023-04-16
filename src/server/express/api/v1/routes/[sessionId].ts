@@ -1,7 +1,7 @@
 import { Error } from "@codrjs/models";
 import { Operation } from "@dylanbulmer/openapi/types/Route";
 import { R200, R401, R403, R500 } from "@dylanbulmer/openapi/classes/responses";
-import verifyJWT from "../../../../middlewares/verifyJWT";
+import verifyJWT from "@/server/express/middlewares/verifyJWT";
 import { SessionUtility } from "@/utils/SessionUtility";
 
 export const GET: Operation = [
