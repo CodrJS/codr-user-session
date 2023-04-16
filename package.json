@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node dist/serve.js",
-    "build": "yarn clean && swc ./src -d dist",
+    "build": "swc ./src -d dist",
     "clean": "rm -R dist/*",
     "test": "jest --config jest.config.json --passWithNoTests --coverage",
     "docker:build": "docker build -t codr-user-session .",
