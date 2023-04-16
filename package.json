@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node dist/serve.js",
-    "build": "swc ./src -d dist",
-    "build:docker": "docker build -t codr-user-session .",
-    "test": "jest --config jest.config.json --passWithNoTests --coverage"
+    "build": "yarn clean && swc ./src -d dist",
+    "clean": "rm -R dist/*",
+    "test": "jest --config jest.config.json --passWithNoTests --coverage",
+    "docker:build": "docker build -t codr-user-session .",
+    "docker:run": "docker run --env-file=.env -p 8000:8000 ghcr.io/codrjs/codr-user-session:latest"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
@@ -32,7 +34,7 @@
     "@codrjs/kafka": "^1.0.2",
     "@codrjs/logger": "^1.0.0",
     "@codrjs/models": "^1.0.7",
-    "@dylanbulmer/openapi": "^1.0.7",
+    "@dylanbulmer/openapi": "^1.0.8",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

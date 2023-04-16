@@ -52,7 +52,7 @@ GET.apiDoc = {
         type: "string",
       },
       required: true,
-      description: "User's Session id to fetch.",
+      description: "Session identifier",
     }
   ],
   responses: {
@@ -145,7 +145,7 @@ PATCH.apiDoc = {
         type: "string",
       },
       required: true,
-      description: "User's Session id to fetch.",
+      description: "Session identifier",
     }
   ],
   responses: {
@@ -263,7 +263,7 @@ DELETE.apiDoc = {
         type: "string",
       },
       required: true,
-      description: "User's Session id to fetch.",
+      description: "Session identifier",
     }
   ],
   responses: {
