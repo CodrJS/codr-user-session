@@ -1,20 +1,29 @@
-import { subject } from "@casl/ability";
 import {
   Session,
   ISession,
   Utility,
   Error,
   Response,
-  IUser,
+  Types,
 } from "@codrjs/models";
-import MongoSession, { SessionDocument } from "@/entities/Session";
-import SessionAbility from "@/entities/Session.ability";
+import { Abilities, Documents } from "@codrjs/mongo";
+import Mongo from "./Mongo";
+
+type Document = Documents.SessionDocument;
+type JwtPayload = Types.JwtPayload;
 
 export class SessionUtility extends Utility {
+  private Session;
+
+  constructor() {
+    super();
+    this.Session = Mongo.User.Session;
+  }
+
   // an internal method for getting the desired document to check against permissions
   protected async _getDocument<T>(id: string) {
     try {
-      return (await MongoSession.findById(id)) as T;
+      return (await this.Session.findById(id)) as T;
     } catch (err) {
       throw new Error({
         status: 500,
@@ -27,12 +36,12 @@ export class SessionUtility extends Utility {
     }
   }
 
-  async get(token: IUser, id: string) {
+  async get(token: JwtPayload, id: string) {
     // get desired session document
-    const session = await this._getDocument<SessionDocument>(id);
+    const session = await this._getDocument<Document>(id);
 
     // if session and read the document, send it, else throw error
-    if (SessionAbility(token).can("read", subject("Session", session))) {
+    if (Abilities.SessionAbility(token).can("read", session)) {
       return new Response({
         message: "OK",
         details: {
@@ -47,15 +56,15 @@ export class SessionUtility extends Utility {
     }
   }
 
-  async create(token: IUser, obj: ISession) {
+  async create(token: JwtPayload, obj: Session) {
     // if session can create sessions
-    if (SessionAbility(token).can("create", "Session")) {
+    if (Abilities.SessionAbility(token).can("create", obj)) {
       try {
         // create session
-        const resp = await MongoSession.create(obj);
+        const session = await this.Session.create(obj.toJSON());
         return new Response({
           message: "OK",
-          details: { session: new Session(resp) },
+          details: { session: new Session(session) },
         });
       } catch (e) {
         throw new Error({
@@ -73,23 +82,23 @@ export class SessionUtility extends Utility {
     }
   }
 
-  async update(token: IUser, id: string, obj: Partial<ISession>) {
+  async update(token: JwtPayload, id: string, obj: Partial<ISession>) {
     // get desired session document
-    const session = await this._getDocument<SessionDocument>(id);
+    const session = new Session(await this._getDocument<Document>(id));
 
     // check permissions
-    if (SessionAbility(token).can("update", subject("Session", session))) {
+    if (Abilities.SessionAbility(token).can("update", session)) {
       try {
         // update session.
-        const session = (await MongoSession.findByIdAndUpdate(id, obj, {
+        const updatedSession = (await this.Session.findByIdAndUpdate(id, obj, {
           returnDocument: "after",
-        })) as SessionDocument;
+        })) as Document;
 
         // return true if succeeded, else throw error
         return new Response({
           message: "OK",
           details: {
-            session: new Session(session),
+            session: new Session(updatedSession),
           },
         });
       } catch (e) {
@@ -111,7 +120,7 @@ export class SessionUtility extends Utility {
   /**
    * @todo Hard or soft delete sessions?
    */
-  async delete(token: IUser, id: string) {
+  async delete(token: JwtPayload, id: string) {
     throw new Error({
       status: 500,
       message: "Method not implemented.",
