@@ -98,7 +98,6 @@ describe("Session Utility", () => {
     await Mongo.connect();
 
     const MongoUser = Mongo.User.User;
-    const MongoSession = Mongo.User.Session;
     Utility = new SessionUtility();
 
     // get user documents
@@ -132,14 +131,14 @@ describe("Session Utility", () => {
   });
 
   describe("Create: Session", () => {
-    test("System cannot add session", async () => {
+    test("System can add session", async () => {
       // run tests
       const data = generateSession(
         new Types.ObjectId(),
         new Types.ObjectId(SystemUser.Payload.sub)
       );
-      const session = await Utility.create(SystemUser.Payload, data);
-      expect(session.details.session.status).toBe("INITIATING");
+      const response = await Utility.create(SystemUser.Payload, data);
+      expect(response.details.session.status).toBe("INITIATING");
     });
 
     test("Admin can add session", async () => {
@@ -148,10 +147,8 @@ describe("Session Utility", () => {
         new Types.ObjectId(),
         new Types.ObjectId(AdminUser.Payload.sub)
       );
-      console.log(data);
-      const session = await Utility.create(AdminUser.Payload, data);
-      console.log(session);
-      expect(session.details.session.status).toBe("INITIATING");
+      const response = await Utility.create(AdminUser.Payload, data);
+      expect(response.details.session.status).toBe("INITIATING");
     });
 
     // test("Researcher can add session", async () => {
